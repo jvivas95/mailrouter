@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('recipients', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->boolean('active')->default(true);
+            $table->integer('order_index')->default(0);
             $table->timestamps();
         });
     }

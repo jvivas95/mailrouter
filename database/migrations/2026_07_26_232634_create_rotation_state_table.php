@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('rotation_state', function (Blueprint $table) {
             $table->id();
+            $table->integer('current_index')->default(0);
             $table->timestamps();
         });
     }

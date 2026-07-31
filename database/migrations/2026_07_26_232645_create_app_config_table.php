@@ -1,5 +1,7 @@
 <?php
 
+// create_app_config_table.php - Store the configuration of mail server
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('app_config', function (Blueprint $table) {
             $table->id();
+            $table->json('data'); // Store the configuration data as a JSON
             $table->timestamps();
         });
     }

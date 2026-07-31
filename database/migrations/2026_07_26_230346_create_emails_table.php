@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('emails', function (Blueprint $table) {
             $table->id();
+            $table->string('uid')->unique();
+            $table->string('sender')->nullable();
+            $table->string('subject');
+            $table->text('body')->nullable();
+            $table->string('forwarded_to')->nullable();
+            $table->timestamp('forwarded_at')->nullable();
+            $table->integer('attachments_count')->default(0);
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }
