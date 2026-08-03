@@ -41,7 +41,7 @@ class MailSenderService
     {
         // Replace the header
         $modified = $this->replaceHeaders($raw, [
-            'From'      => $config['email_adress'],
+            'From'      => $config['email_address'],
             'To'        => $recipient->email,
             'Subject'   => 'Fwd: ' . $subject,
         ]);
@@ -57,7 +57,7 @@ class MailSenderService
 
         // Create a new email message with the modified raw content
         $email = new Email();
-        $email->from($config['email_adress'])
+        $email->from($config['email_address'])
               ->to($recipient->email)
               ->subject('Fwd: ' . $subject)
               ->setBody($smimePart);
