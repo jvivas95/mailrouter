@@ -27,4 +27,12 @@ class UserController extends Controller
 
         return back()->with('success', "Usuario {$request->name} añadido");
     }
+
+    public function destroy(int $id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return back()->with('success', "Usuario {$user->name} eliminado");
+    }
 }

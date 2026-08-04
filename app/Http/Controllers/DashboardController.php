@@ -7,6 +7,7 @@ use App\Models\Email;
 use App\Models\Recipient;
 use App\Models\User;
 use App\Models\AppConfig;
+use App\Models\RotationState;
 use App\Jobs\ProcessInboxJob;
 
 
@@ -19,6 +20,16 @@ class DashboardController extends Controller
         $recipients = Recipient::orderBy('order_index')->get();
         $users = User::all();
         $config = AppConfig::get();
+        $state = RotationState::firstOrCreate(['id' => 1], ['current_index' => 0]);
+        $active = $recipients->where('active', true)->values();
+
+        //
+        $currentRecipient = null;
+        if ($active->isNotEmpty()) {
+            $idx = $state->current_index % $active->count();
+            $currentRecipient = $active[$idx];
+        }
+
         $stats = [
             'total' => Email::count(),
             'forwarded' => Email::forwarded()->count(),
@@ -26,8 +37,14 @@ class DashboardController extends Controller
             'errors' => Email::where('status', 'error')->count(),
         ];
 
-        return view('dashboard', compact('emails', 'recipients', 'users', 'config', 'stats'));
+        return view('dashboard', compact('emails', 'recipients', 'users', 'config', 'stats', 'currentRecipient'));
     }
+
+    public function show(Email $email)
+    {
+        return view('emails.show', compact('email'));
+    }
+
 
     public function startWorker()
     {
@@ -38,8 +55,28 @@ class DashboardController extends Controller
         // Dispatch the ProcessInboxJob to run immediately
         ProcessInboxJob::dispatch();
 
-        return back()->with('success', 'Worker started and ProcessInboxJob dispatched.');
+        return back()->with('success', 'Monitor de correos activado');
+    }
 
+    public function stopWorker()
+    {
+        $config = AppConfig::get();
+        $config['active'] = false;
+        AppConfig::set($config);
 
+        return back()->with('success', 'Monitor de correos desactivado');
+    }
+
+    public function checkNow()
+    {
+        $config = AppConfig::get();
+
+        if (empty($config['email_address']) || empty($config['email_password'])) {
+            return back()->with('error', 'Configura el email primero');
+        }
+
+        ProcessInboxJob::dispatch();
+
+        return back()->with('success', 'Revisión de correos iniciada');
     }
 }
