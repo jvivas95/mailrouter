@@ -1,6 +1,6 @@
-FROM php:8.2-fpm
+FROM php:8.3-fpm
 
-# Install system dependencies
+# 1. Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions needed for Laravel
+# 2. Install PHP extensions required by Laravel
 RUN docker-php-ext-install \
     pdo_mysql \
     mbstring \
@@ -27,27 +27,31 @@ RUN docker-php-ext-install \
     gd \
     zip
 
-# Install Composer
+# 3. Copy Composer executable from official image
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Working directory
+# 4. Set working directory
 WORKDIR /var/www
 
-# Copy project files
+# 5. Copy Composer manifests and install PHP dependencies (leveraging layer caching)
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --no-scripts --no-autoloader --no-interaction
+
+# 6. Copy application code
 COPY . .
 
-# Install PHP dependencies (without development packages)
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+# 7. Generate optimized autoloader
+RUN composer dump-autoload --optimize
 
-# Install JS dependencies and compile Tailwind
+# 8. Install JS dependencies and build frontend assets
 RUN npm install && npm run build
 
-# Permissions for Laravel
+# 9. Set permissions for Laravel
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 775 /var/www/storage \
     && chmod -R 775 /var/www/bootstrap/cache
 
-# Copy configurations
+# 10. Copy configuration files
 COPY docker/nginx.conf /etc/nginx/sites-available/default
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY docker/entrypoint.sh /entrypoint.sh

@@ -1,6 +1,9 @@
 .git
+.git/
 .gitignore
 node_modules
+node_modules/
+vendor/
 vendor
 storage/logs/*
 storage/framework/cache/*
@@ -11,3 +14,4 @@ bootstrap/cache/*
 *.log
 docker-compose.override.yml
 README.md
+public/build/

@@ -1,6 +1,22 @@
 #!/bin/bash
 set -e
 
+#!/bin/sh
+set -e
+
+# 1. Delete hot file if exist
+echo "Limpiando rastros de Vite dev server (public/hot)..."
+rm -f public/hot
+
+# 2. Cache and optimization of Laravel
+echo "Optimizando Laravel..."
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+# 3. Execute
+exec "$@"
+
 echo "🚀 Starting MailRouter..."
 
 # ── Wait for MySQL ──────────────────────────────────
