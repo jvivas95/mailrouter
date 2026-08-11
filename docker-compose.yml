@@ -1,0 +1,66 @@
+services:
+
+  # ── Laravel app ─────────────────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mailrouter_app
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      APP_ENV: production
+      APP_DEBUG: false
+      APP_KEY: ${APP_KEY}
+      APP_URL: ${APP_URL:-http://localhost}
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: ${DB_DATABASE:-mailrouter}
+      DB_USERNAME: ${DB_USERNAME:-mailrouter}
+      DB_PASSWORD: ${DB_PASSWORD:-secret}
+      QUEUE_CONNECTION: database
+      MAIL_MAILER: smtp
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - storage_data:/var/www/storage/app
+      - logs_data:/var/www/storage/logs
+    networks:
+      - mailrouter_network
+
+  # ── Base de datos MySQL ─────────────────────────────────────────────
+  db:
+    image: mysql:8.0
+    container_name: mailrouter_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-mailrouter}
+      MYSQL_USER: ${DB_USERNAME:-mailrouter}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootsecret}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 10
+      interval: 5s
+    networks:
+      - mailrouter_network
+
+# ── Volúmenes persistentes ──────────────────────────────────────────
+volumes:
+  db_data:
+    driver: local
+  storage_data:
+    driver: local
+  logs_data:
+    driver: local
+
+# ── Red interna ─────────────────────────────────────────────────────
+networks:
+  mailrouter_network:
+    driver: bridge
