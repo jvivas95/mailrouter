@@ -8,75 +8,98 @@ use App\Models\{Email, AppConfig};
 use App\Services\{MailReaderService, MailSenderService, RotationService};
 use Illuminate\Support\Facades\Log;
 
-
 class ProcessInboxJob implements ShouldQueue
 {
     use Queueable;
 
-    public $tries = 3; // Number of attempts before failing the job
-    public $timeout = 120; // Timeout in seconds for the job execution
+    public $tries = 3;
+    public $timeout = 120;
 
-    /**
-     * Create a new job instance.
-     */
     public function __construct()
     {
         //
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(
-        MailReaderService $reader,
-        MailSenderService $sender,
-        RotationService $rotation
-    ): void
-    {
-        // Get the application configuration
-        $config = AppConfig::get();
+    MailReaderService $reader,
+    MailSenderService $sender,
+    RotationService $rotation
+    ): void {
+    Log::info('[MailRouter] ===== INICIO DEL JOB =====');
 
-        if (empty($config['email_address']) || empty($config['email_password'])) {
-            return; // Exit if email configuration is not set
+    $config = AppConfig::get();
+    Log::info('[MailRouter] Config cargada: ' . json_encode([
+        'email_address' => $config['email_address'] ?? 'VACÍO',
+        'active'        => $config['active'] ?? 'VACÍO',
+        'tiene_password'=> !empty($config['email_password']) ? 'SÍ' : 'NO',
+    ]));
+
+    if (empty($config['email_address']) || empty($config['email_password'])) {
+        Log::warning('[MailRouter] Configuración incompleta. Saliendo.');
+        return;
+    }
+
+    Log::info('[MailRouter] Llamando a fetchUnseen...');
+
+    try {
+        $emails = $reader->fetchUnseen($config);
+        Log::info('[MailRouter] fetchUnseen completado. Emails: ' . count($emails));
+    } catch (\Exception $e) {
+        Log::error('[MailRouter] Error en fetchUnseen: ' . $e->getMessage());
+        return;
+    }
+
+    if (count($emails) === 0) {
+        Log::info('[MailRouter] No hay correos nuevos. Saliendo.');
+        return;
+    }
+
+    foreach ($emails as $em) {
+        Log::info("[MailRouter] Procesando UID: {$em['uid']} | Asunto: {$em['subject']}");
+
+        if (Email::where('uid', $em['uid'])->exists()) {
+            Log::info("[MailRouter] UID {$em['uid']} duplicado. Saltando.");
+            continue;
         }
 
-        // Fetch unseen emails from the inbox
-        $emails = $reader->fetchUnseen($config);
+        Log::info("[MailRouter] Guardando en DB...");
+        $email = Email::create([
+            'uid'               => $em['uid'],
+            'sender'            => $em['sender'] ?? '',
+            'subject'           => $em['subject'] ?? 'Sin asunto',
+            'body'              => $em['body'] ?? '',
+            'attachments_count' => $em['attachments_count'] ?? 0,
+            'status'            => 'pending',
+        ]);
+        Log::info("[MailRouter] Guardado con ID: {$email->id}");
 
-        foreach ($emails as $em){
-            // Avoid duplicated mails
-            if (Email::where('uid', $em['uid'])->exists()) {
-                continue;
-            }
+        Log::info("[MailRouter] Obteniendo destinatario...");
+        $recipient = $rotation->getNextRecipient();
+        Log::info("[MailRouter] Destinatario: " . ($recipient ? "{$recipient->name} <{$recipient->email}>" : 'NULL'));
 
-            // Save the email to the database
-            $email = Email::create([
-                'uid' => $em['uid'],
-                'sender' => $em['sender'],
-                'subject' => $em['subject'],
-                'body' => $em['body'],
-                'attatchments_count' => $em['attachments_count'],
-                'status' => 'pending',
+        if (!$recipient) {
+            $email->update(['status' => 'no_recipients']);
+            Log::warning('[MailRouter] Sin destinatarios. Saltando.');
+            continue;
+        }
+
+        Log::info("[MailRouter] Intentando reenviar a {$recipient->email}...");
+
+        try {
+            $sender->forward($em['raw_message'], $recipient, $config);
+            $email->update([
+                'forwarded_to' => "{$recipient->name} <{$recipient->email}>",
+                'forwarded_at' => now(),
+                'status'       => 'forwarded',
             ]);
-
-            // Get the next recipient in rotation
-            $recipient = $rotation->getNextRecipient();
-            if (!$recipient) {
-                $email->update(['status' => 'no_recipient']);
-                continue; // Exit if no recipient is available
-            }
-
-            try {
-                $sender->forward($em['raw_message'], $recipient, $config);
-                $email->update([
-                    'forwarded_to' => "{$recipient->name} <{$recipient->email}>",
-                    'forwarded_at' => now(),
-                    'status' => 'forwarded',
-                ]);
-            } catch (\Exception $e) {
-                $email->update(['status' => 'failed']);
-                Log::error('[MailRouter] Error al reenviar: ' . $e->getMessage());
-            }
+            Log::info("[MailRouter] ✓ Reenviado correctamente.");
+        } catch (\Exception $e) {
+            $email->update(['status' => 'failed']);
+            Log::error("[MailRouter] ✕ Error en forward(): " . $e->getMessage());
+            Log::error("[MailRouter] Traza: " . $e->getTraceAsString());
         }
     }
+
+    Log::info('[MailRouter] ===== FIN DEL JOB =====');
+}
 }
