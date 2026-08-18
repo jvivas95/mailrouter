@@ -44,7 +44,7 @@ COPY . .
 RUN composer dump-autoload --optimize
 
 # 8. Install JS dependencies and build frontend assets
-RUN npm install && npm run build
+# RUN npm install && npm run build
 
 # 9. Set permissions for Laravel
 RUN chown -R www-data:www-data /var/www \
