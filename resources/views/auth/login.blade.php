@@ -63,6 +63,15 @@
                placeholder="••••••••"
                class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-sm text-white
                       placeholder-gray-600 focus:outline-none focus:border-indigo-500 transition-colors">
+
+        @if (Route::has('password.request'))
+        <div class="text-right mt-2">
+            <a href="{{ route('password.request') }}"
+            class="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">
+            ¿Olvidaste la contraseña?
+            </a>
+        </div>
+        @endif
       </div>
 
       <button type="submit"
