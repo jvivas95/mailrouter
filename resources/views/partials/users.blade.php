@@ -51,8 +51,12 @@
                class="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white
                       placeholder-gray-600 focus:outline-none focus:border-indigo-500 transition-colors">
         <input type="password" name="password" placeholder="Contraseña" required
-               class="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white
-                      placeholder-gray-600 focus:outline-none focus:border-indigo-500 transition-colors">
+                class="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white
+              placeholder-gray-600 focus:outline-none focus:border-indigo-500 transition-colors">
+
+        <input type="password" name="password_confirmation" placeholder="Repetir contraseña" required
+            class="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white
+                    placeholder-gray-600 focus:outline-none focus:border-indigo-500 transition-colors">
         <select name="role"
                 class="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white
                        focus:outline-none focus:border-indigo-500 transition-colors">
@@ -60,6 +64,18 @@
           <option value="admin">admin — acceso total</option>
         </select>
       </div>
+    {{-- Mensajes de error de validación --}}
+    @if($errors->any())
+    <div class="mb-3 p-3 bg-red-900/20 border border-red-800/40 rounded-lg">
+        <ul class="space-y-1">
+        @foreach($errors->all() as $error)
+        <li class="text-xs text-red-400 flex items-center gap-2">
+            <span>✕</span> {{ $error }}
+        </li>
+        @endforeach
+        </ul>
+    </div>
+    @endif
       <button type="submit"
               class="w-full px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-lg transition-colors">
         + Añadir usuario
