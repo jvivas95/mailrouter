@@ -56,13 +56,22 @@
       </div>
 
       <div>
-        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
-          Contraseña
-        </label>
-        <input type="password" name="password" required
-               placeholder="••••••••"
-               class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-sm text-white
-                      placeholder-gray-600 focus:outline-none focus:border-indigo-500 transition-colors">
+        <div class="relative">
+            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
+                Contraseña
+            </label>
+            <div class="relative">
+                <input id="password-input" type="password" name="password" required
+                    placeholder="••••••••"
+                    class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-sm text-white
+                            placeholder-gray-600 focus:outline-none focus:border-indigo-500 transition-colors pr-20">
+                <button type="button"
+                        onclick="togglePassword()"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500 hover:text-gray-300 transition-colors">
+                <span id="toggle-label">👁️ Mostrar</span>
+                </button>
+            </div>
+        </div>
 
         @if (Route::has('password.request'))
         <div class="text-right mt-2">
@@ -88,3 +97,16 @@
 
 </body>
 </html>
+<script>
+function togglePassword() {
+  const input = document.getElementById('password-input');
+  const label = document.getElementById('toggle-label');
+  if (input.type === 'password') {
+    input.type = 'text';
+    label.textContent = '🙈 Ocultar';
+  } else {
+    input.type = 'password';
+    label.textContent = '👁️ Mostrar';
+  }
+}
+</script>
