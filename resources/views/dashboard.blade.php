@@ -206,8 +206,7 @@
             if (data.success) {
                 // Actualizar el badge NEXT visualmente
                 // El primero activo de la nueva lista es el NEXT
-                updateNextBadge(items);
-                showToast('Orden actualizado');
+                window.location.reload();
             }
         })
         .catch(() => showToast('Error al guardar el orden', true));
@@ -226,10 +225,17 @@
             .then(r => r.json())
             .then(data => {
                 if (!data.id) return;
-
+                console.log('Next recipient:', data); // ← añade esto
                 // Encontrar el li correspondiente y añadir el badge
                 const targetLi = list.querySelector(`li[data-id="${data.id}"]`);
                 if (!targetLi) return;
+
+                console.log('Target li:', targetLi); // ← y esto
+
+                // Badge creation
+                const badge = document.createElement('span');
+                badge.className = 'next-badge text-xs font-semibold text-indigo-400 bg-indigo-900/30 border border-indigo-800/50 px-1.5 py-0.5 rounded flex-shrink-0';
+                badge.textContent = 'NEXT';
 
                 // Actualizar también el bloque "Siguiente en recibir"
                 const nextName  = targetLi.querySelector('.recipient-name')?.textContent;
@@ -240,13 +246,14 @@
                 if (nameEl)  nameEl.textContent  = nextName;
                 if (emailEl) emailEl.textContent = nextEmail;
 
-                // Añadir badge NEXT al li correcto
+
+                // Insertar al final del li, antes del div de acciones
+                // Si no encuentra recipient-actions, lo añade al final del li
                 const actionsDiv = targetLi.querySelector('.recipient-actions');
                 if (actionsDiv) {
-                    const badge = document.createElement('span');
-                    badge.className = 'next-badge text-xs font-semibold text-indigo-400 bg-indigo-900/30 border border-indigo-800/50 px-1.5 py-0.5 rounded';
-                    badge.textContent = 'NEXT';
                     actionsDiv.before(badge);
+                } else {
+                    targetLi.appendChild(badge);
                 }
             });
     }
