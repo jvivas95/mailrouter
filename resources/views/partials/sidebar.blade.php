@@ -13,11 +13,11 @@
   <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
     <p class="text-xs font-semibold text-gray-600 uppercase tracking-widest px-3 mb-2">Navegación</p>
 
-    <a href="#overview"
+    <a href="{{ route('dashboard') }}"
        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-indigo-600/10 hover:text-white transition-colors">
       <span>⊞</span> Dashboard
     </a>
-    <a href="#emails-section"
+    <a href="{{ route('emails.index') }}"
        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-indigo-600/10 hover:text-white transition-colors">
       <span>✉</span> Correos
     </a>
