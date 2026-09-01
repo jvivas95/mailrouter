@@ -23,6 +23,6 @@
 
 @push('scripts')
     @vite([
-        'resources/js/recipients.js'
+        'resources/js/recipients.js',
     ])
 @endpush

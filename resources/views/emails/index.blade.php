@@ -20,3 +20,9 @@
 
     </div>
 </div>
+
+@push('scripts')
+    @vite([
+        'resources/js/emails.js'
+    ])
+@endpush
