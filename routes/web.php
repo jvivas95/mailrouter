@@ -18,7 +18,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/emails/{email}', [DashboardController::class, 'show'])->name('emails.show');
     Route::get('/recipients', [RecipientController::class, 'index'])->name('recipients.index');
 
-
     Route::get('/api/stats', function () {
         return response()->json([
             'total'     => \App\Models\Email::count(),
@@ -52,6 +51,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/recipients/{id}', [RecipientController::class, 'destroy']);
         Route::patch('/recipients/{id}/toggle', [RecipientController::class, 'toggle']);
         Route::post('/recipients/reorder', [RecipientController::class, 'reorder']); // ← drag and drop
+        Route::get('/config', [ConfigController::class, 'index'])->name('config.index');
         Route::post('/config', [ConfigController::class, 'update']);
         Route::post('/users', [UserController::class, 'store']);
         Route::delete('/users/{id}', [UserController::class, 'destroy']);

@@ -28,7 +28,6 @@
 
             {{-- Config — solo admin --}}
             @if(auth()->user()->isAdmin())
-                @include('partials.config')
                 @include('partials.users')
             @endif
 

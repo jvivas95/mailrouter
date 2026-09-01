@@ -27,7 +27,7 @@
     </a>
 
     @if(auth()->user()->isAdmin())
-    <a href="#config-section"
+    <a href="{{ route('config.index') }}"
        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-indigo-600/10 hover:text-white transition-colors">
       <span>⚙</span> Configuración
     </a>

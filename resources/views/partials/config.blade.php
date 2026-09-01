@@ -1,5 +1,5 @@
 {{-- resources/views/partials/config.blade.php --}}
-<div id="config-section" class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+<div id="config-section" class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden mt-16 mr-20 ml-20">
   <div class="px-6 py-4 border-b border-gray-800">
     <h2 class="text-sm font-semibold text-white">⚙ Configuración del servidor</h2>
   </div>

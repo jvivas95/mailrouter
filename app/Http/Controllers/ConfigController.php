@@ -8,6 +8,12 @@ use App\Models\AppConfig;
 class ConfigController extends Controller
 {
     //
+    public function index()
+    {
+        $config = AppConfig::get();
+        return view('config.index', compact('config'));
+    }
+
     public function update(Request $request)
     {
         $request->validate([
