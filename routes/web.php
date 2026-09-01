@@ -53,6 +53,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/recipients/reorder', [RecipientController::class, 'reorder']); // ← drag and drop
         Route::get('/config', [ConfigController::class, 'index'])->name('config.index');
         Route::post('/config', [ConfigController::class, 'update']);
+        Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::post('/users', [UserController::class, 'store']);
         Route::delete('/users/{id}', [UserController::class, 'destroy']);
         Route::post('/worker/start', [DashboardController::class, 'startWorker']);

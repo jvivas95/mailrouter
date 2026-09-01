@@ -9,6 +9,11 @@ use App\Models\User;
 class UserController extends Controller
 {
     //
+    public function index()
+    {
+        $users = User::all();
+        return view('users.index', compact('users'));
+    }
     public function store(Request $request)
     {
         $request->validate([
@@ -16,6 +21,10 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
             'role' => 'required|in:admin,user',
+        ], [
+            // Custom error messages
+            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+            'password.confirmed' => 'La confirmación de la contraseña no coincide.',
         ]);
 
         User::create([
