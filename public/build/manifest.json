@@ -14,6 +14,18 @@
     "src": "resources/js/app.js",
     "isEntry": true
   },
+  "resources/js/dashboard.js": {
+    "file": "assets/dashboard-BB3xOPSe.js",
+    "name": "dashboard",
+    "src": "resources/js/dashboard.js",
+    "isEntry": true
+  },
+  "resources/js/emails.js": {
+    "file": "assets/emails-D-MQKYMs.js",
+    "name": "emails",
+    "src": "resources/js/emails.js",
+    "isEntry": true
+  },
   "resources/js/recipients.js": {
     "file": "assets/recipients-CsBk1Zlb.js",
     "name": "recipients",
