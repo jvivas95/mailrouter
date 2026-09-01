@@ -4,10 +4,27 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Recipient;
+use App\Models\RotationState;
+
 
 class RecipientController extends Controller
 {
     //
+    public function index()
+    {
+        $recipients = Recipient::orderBy('order_index')->get();
+        $active = $recipients->where('active', true)->values();
+        $state = RotationState::firstOrCreate(['id' => 1], ['current_index' => 0]);
+
+        $currentRecipient = null;
+        if ($active->isNotEmpty()) {
+            $idx = $state->current_index % $active->count();
+            $currentRecipient = $active[$idx];
+        }
+
+        return view('recipients.index', compact('recipients', 'currentRecipient'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([

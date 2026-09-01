@@ -21,7 +21,7 @@
        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-indigo-600/10 hover:text-white transition-colors">
       <span>✉</span> Correos
     </a>
-    <a href="#recipients-section"
+    <a href="{{ route('recipients.index') }}"
        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-indigo-600/10 hover:text-white transition-colors">
       <span>👥</span> Destinatarios
     </a>
