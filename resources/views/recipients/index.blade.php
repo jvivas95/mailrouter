@@ -10,7 +10,8 @@
     <div class="flex-1 ml-60 flex flex-col">
 
         {{-- Header --}}
-        <x-header/>
+        @include('components.header')
+
 
         {{-- Recipients --}}
         <div>
