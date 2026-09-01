@@ -53,7 +53,7 @@ class DashboardController extends Controller
         AppConfig::set($config);
 
         // Dispatch the ProcessInboxJob to run immediately
-        ProcessInboxJob::dispatch();
+        ProcessInboxJob::dispatchSync();
 
         return back()->with('success', 'Monitor de correos activado');
     }
@@ -75,7 +75,7 @@ class DashboardController extends Controller
             return back()->with('error', 'Configura el email primero');
         }
 
-        ProcessInboxJob::dispatch();
+        ProcessInboxJob::dispatchSync();
 
         return back()->with('success', 'Revisión de correos iniciada');
     }
