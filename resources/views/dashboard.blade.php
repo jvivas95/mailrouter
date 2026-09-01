@@ -16,21 +16,6 @@
 
         {{-- Stats --}}
         @include('components.emails-stats')
-
-        {{-- Grid principal --}}
-        <div class="grid grid-cols-3 gap-6 items-start">
-
-            {{-- Columna izquierda (2/3) --}}
-            <div class="col-span-2 space-y-6">
-
-            {{-- Config — solo admin --}}
-            @if(auth()->user()->isAdmin())
-                @include('partials.users')
-            @endif
-
-            </div>
-
-        </div>{{-- /grid --}}
     </div>{{-- /main --}}
 </div>{{-- /flex --}}
 @endsection
