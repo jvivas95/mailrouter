@@ -1,0 +1,1 @@
+function e(){let e=document.getElementById(`sidebar`),t=document.getElementById(`sidebar-overlay`);e.classList.toggle(`-translate-x-full`),t.classList.toggle(`hidden`)}window.toggleSidebar=e;

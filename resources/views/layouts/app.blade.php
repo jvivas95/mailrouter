@@ -15,7 +15,7 @@
     ::-webkit-scrollbar-thumb { background: #252538; border-radius: 3px; }
   </style>
 </head>
-<body class="bg-gray-950 text-gray-200 min-h-screen">
+<body class="min-h-screen overflow-x-hidden bg-gray-950 text-gray-200">
 
   {{-- Flash messages --}}
   @if (session('success'))

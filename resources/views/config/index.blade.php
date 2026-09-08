@@ -7,7 +7,7 @@
     @include('partials.sidebar')
 
     {{-- Main --}}
-    <div class="flex-1 ml-60 flex flex-col">
+    <div class="flex flex-1 flex-col lg:ml-60">
 
         {{-- Header --}}
         @include('components.header')

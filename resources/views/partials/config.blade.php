@@ -1,14 +1,14 @@
 {{-- resources/views/partials/config.blade.php --}}
-<div id="config-section" class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden mt-16 mr-20 ml-20">
+<div id="config-section" class="mt-8 overflow-hidden rounded-xl border border-gray-800 bg-gray-900 mx-4 sm:mx-6 lg:mx-20 lg:mt-16">
   <div class="px-6 py-4 border-b border-gray-800">
     <h2 class="text-sm font-semibold text-white">⚙ Configuración del servidor</h2>
   </div>
   <div class="p-6">
     <form method="POST" action="/config">
       @csrf
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 
-        <div class="col-span-2">
+        <div class="sm:col-span-2">
           <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
             Email monitoreado
           </label>
@@ -19,7 +19,7 @@
                         placeholder-gray-600 focus:outline-none focus:border-indigo-500 transition-colors">
         </div>
 
-        <div class="col-span-2">
+        <div class="sm:col-span-2">
           <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
             Contraseña / App Password
           </label>
@@ -50,7 +50,7 @@
                         focus:outline-none focus:border-indigo-500 transition-colors">
         </div>
 
-        <div class="col-span-2">
+        <div class="sm:col-span-2">
           <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
             Intervalo de revisión (segundos)
           </label>

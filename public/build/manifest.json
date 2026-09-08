@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-DBEyFc63.css",
+    "file": "assets/app-DCwSIrkf.css",
     "name": "app",
     "names": [
       "app.css"
@@ -9,10 +9,14 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-CzIqMG_e.js",
+    "file": "assets/app-DIb0Q_C6.js",
     "name": "app",
     "src": "resources/js/app.js",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "resources/js/sidebar.js",
+      "resources/js/sidebar.js"
+    ]
   },
   "resources/js/dashboard.js": {
     "file": "assets/dashboard-BB3xOPSe.js",
@@ -30,6 +34,12 @@
     "file": "assets/recipients-CsBk1Zlb.js",
     "name": "recipients",
     "src": "resources/js/recipients.js",
+    "isEntry": true
+  },
+  "resources/js/sidebar.js": {
+    "file": "assets/sidebar-S1t9j_d3.js",
+    "name": "sidebar",
+    "src": "resources/js/sidebar.js",
     "isEntry": true
   }
 }

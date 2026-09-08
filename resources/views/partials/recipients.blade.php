@@ -1,5 +1,5 @@
 {{-- resources/views/partials/recipients.blade.php --}}
-<div id="recipients-section" class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden ml-20 mr-20 mt-16">
+<div id="recipients-section" class="mt-8 overflow-hidden rounded-xl border border-gray-800 bg-gray-900 mx-4 sm:mx-6 lg:mx-20 lg:mt-16">
 
   {{-- Título --}}
 

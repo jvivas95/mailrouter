@@ -1,5 +1,7 @@
 
 
+import './sidebar';
+
 import Alpine from 'alpinejs';
 import collapse from '@alpinejs/collapse';
 

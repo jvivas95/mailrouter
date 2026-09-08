@@ -1,5 +1,5 @@
 {{-- resources/views/partials/users.blade.php --}}
-<div id="users-section" class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden mt-16 mr-20 ml-20">
+<div id="users-section" class="mt-8 overflow-hidden rounded-xl border border-gray-800 bg-gray-900 mx-4 sm:mx-6 lg:mx-20 lg:mt-16">
   <div class="px-6 py-4 border-b border-gray-800">
     <h2 class="text-sm font-semibold text-white">🔑 Gestión de usuarios</h2>
   </div>

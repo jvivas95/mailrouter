@@ -10,6 +10,7 @@ export default defineConfig({
                 'resources/js/recipients.js',
                 'resources/js/emails.js',
                 'resources/js/dashboard.js',
+                'resources/js/sidebar.js',
             ],
             refresh: true,
         }),

@@ -1,5 +1,11 @@
 {{-- resources/views/partials/sidebar.blade.php --}}
-<aside class="w-60 fixed top-0 left-0 h-screen bg-gray-900 border-r border-gray-800 flex flex-col z-50">
+<div id="sidebar-overlay"
+    class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden"
+    onclick="toggleSidebar()">
+</div>
+
+<aside id="sidebar"
+    class="fixed top-0 left-0 z-50 flex h-screen w-72 max-w-[85vw] flex-col border-r border-gray-800 bg-gray-900 shadow-2xl transition-transform duration-300 -translate-x-full lg:w-60 lg:translate-x-0 lg:shadow-none">
 
     {{-- Logo --}}
     <div class="px-6 py-6 border-b border-gray-800">
