@@ -17,6 +17,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/emails', [EmailController::class, 'index'])->name('emails.index');
     Route::get('/emails/{email}', [DashboardController::class, 'show'])->name('emails.show');
     Route::get('/recipients', [RecipientController::class, 'index'])->name('recipients.index');
+    //Route::post('/emails', [EmailController::class, 'index'])->name('emails.index');
 
     Route::get('/api/stats', function () {
         return response()->json([

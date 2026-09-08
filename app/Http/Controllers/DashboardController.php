@@ -16,7 +16,7 @@ class DashboardController extends Controller
     //
     public function index()
     {
-        $emails = Email::latest()->take(50)->get();
+        $emails = Email::latest()->paginate(10);
         $recipients = Recipient::orderBy('order_index')->get();
         $users = User::all();
         $config = AppConfig::get();
@@ -37,7 +37,7 @@ class DashboardController extends Controller
             'errors' => Email::where('status', 'error')->count(),
         ];
 
-        return view('dashboard', compact('emails', 'recipients', 'users', 'config', 'stats', 'currentRecipient'));
+        return view('dashboard', compact('emails', 'recipients', 'users', 'config', 'stats','active', 'currentRecipient'));
     }
 
     public function show(Email $email)
